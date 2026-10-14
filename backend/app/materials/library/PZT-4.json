@@ -1,0 +1,34 @@
+{
+  "id": "PZT-4",
+  "name": "PZT-4 (Navy Type I)",
+  "source": "Berlincourt, Krueger & Near, 'Properties of Morgan Electro Ceramic Ceramics', Technical Publication TP-226 (typical values)",
+  "form": "d",
+  "voigt_order": "IEEE: 1=xx, 2=yy, 3=zz, 4=yz, 5=xz, 6=xy; poling along local 3",
+  "units": {
+    "density": "kg/m^3",
+    "s_E": "m^2/N",
+    "d": "C/N",
+    "eps_T_rel": "relative to eps0 (dimensionless)"
+  },
+  "density": 7500.0,
+  "s_E": {
+    "s11": 12.3e-12,
+    "s12": -4.05e-12,
+    "s13": -5.31e-12,
+    "s33": 15.5e-12,
+    "s44": 39.0e-12
+  },
+  "d": {
+    "d31": -123e-12,
+    "d33": 289e-12,
+    "d15": 496e-12
+  },
+  "eps_T_rel": {
+    "eps11": 1475.0,
+    "eps33": 1300.0
+  },
+  "losses": {
+    "Qm": 500.0,
+    "tan_delta": 0.004
+  }
+}

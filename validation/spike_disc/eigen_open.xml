@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<cfsSimulation xmlns="http://www.cfs++.org/simulation">
+  <!-- Spike: PZT-4 disc, a = 10.5 mm, t = 1.5 mm, full-face electrodes, axisymmetric. Eigen, top electrode floating equipotential -> antiresonance f_a. -->
+  <fileFormats>
+    <input>
+      <gmsh fileName="disc.msh"/>
+    </input>
+    <output>
+      <hdf5/>
+      <text id="txt"/>
+    </output>
+    <materialData file="mat_lossless.xml" format="xml"/>
+  </fileFormats>
+
+  <domain geometryType="axi">
+    <regionList>
+      <region name="piezo" material="PZT-4"/>
+    </regionList>
+    <surfRegionList>
+      <surfRegion name="top"/>
+      <surfRegion name="bottom"/>
+      <surfRegion name="axis"/>
+      <surfRegion name="outer"/>
+    </surfRegionList>
+  </domain>
+
+  <sequenceStep>
+    <analysis>
+      <eigenFrequency>
+        <isQuadratic>no</isQuadratic>
+        <numModes>60</numModes>
+        <freqShift>1000</freqShift>
+        <writeModes>yes</writeModes>
+      </eigenFrequency>
+    </analysis>
+
+    <pdeList>
+      <mechanic subType="axi">
+        <regionList>
+          <region name="piezo"/>
+        </regionList>
+        <bcsAndLoads>
+          <fix name="axis">
+            <comp dof="r"/>
+          </fix>
+        </bcsAndLoads>
+        <storeResults>
+          <nodeResult type="mechDisplacement">
+            <allRegions/>
+          </nodeResult>
+        </storeResults>
+      </mechanic>
+
+      <electrostatic>
+        <regionList>
+          <region name="piezo"/>
+        </regionList>
+        <bcsAndLoads>
+          <ground name="bottom"/>
+          <constraint name="top"/>
+        </bcsAndLoads>
+        <storeResults>
+          <nodeResult type="elecPotential">
+            <allRegions/>
+          </nodeResult>
+        </storeResults>
+      </electrostatic>
+    </pdeList>
+
+    <couplingList>
+      <direct>
+        <piezoDirect>
+          <regionList>
+            <region name="piezo"/>
+          </regionList>
+          <storeResults>
+            <surfRegionResult type="elecCharge">
+              <surfRegionList>
+                <surfRegion name="top" neighborRegion="piezo"/>
+                <surfRegion name="bottom" neighborRegion="piezo"/>
+              </surfRegionList>
+            </surfRegionResult>
+          </storeResults>
+        </piezoDirect>
+      </direct>
+    </couplingList>
+
+    <linearSystems>
+      <system>
+        <solverList>
+          <directLU/>
+        </solverList>
+      </system>
+    </linearSystems>
+  </sequenceStep>
+</cfsSimulation>

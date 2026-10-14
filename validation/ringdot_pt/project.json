@@ -1,0 +1,32 @@
+{
+  "name": "Ring-dot PT: PZT-4 disc 10.5 x 1.5 mm, dot 0-5 mm in, ring 6-10.5 mm out",
+  "units": "SI",
+  "bodies": [
+    {
+      "id": "disc",
+      "shape": "disc",
+      "params": { "radius": 0.0105, "thickness": 0.0015, "z_offset": 0.0 },
+      "material_id": "PZT-4",
+      "poling": { "direction": "+z" }
+    }
+  ],
+  "electrodes": [
+    { "id": "dot", "body_id": "disc", "surface": "top",
+      "extent": { "kind": "annulus", "r_min": 0.0, "r_max": 0.005 }, "terminal_id": "in" },
+    { "id": "ring", "body_id": "disc", "surface": "top",
+      "extent": { "kind": "annulus", "r_min": 0.006, "r_max": 0.0105 }, "terminal_id": "out" },
+    { "id": "bottom", "body_id": "disc", "surface": "bottom",
+      "extent": { "kind": "annulus", "r_min": 0.0, "r_max": 0.0105 }, "terminal_id": "gnd" }
+  ],
+  "terminals": [
+    { "id": "in", "name": "Input (dot)", "role": "port" },
+    { "id": "out", "name": "Output (ring)", "role": "port" },
+    { "id": "gnd", "name": "Ground", "role": "ground" }
+  ],
+  "study": {
+    "eigen": { "num_modes": 20, "freq_shift": 1000.0, "port_condition": "short" },
+    "harmonic": { "f_start": 20000.0, "f_stop": 200000.0, "n_points": 181, "spacing": "lin" },
+    "ports": [],
+    "mesh": { "max_element_size": 0.00025, "elements_per_wavelength_at_f_max": 10, "order": 2 }
+  }
+}

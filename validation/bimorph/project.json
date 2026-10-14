@@ -1,0 +1,28 @@
+{
+  "name": "Parallel bimorph: 2 x 0.75 mm PZT-4, opposite poling, driven centre electrode",
+  "units": "SI",
+  "bodies": [
+    { "id": "lower", "shape": "disc", "params": { "radius": 0.0105, "thickness": 0.00075, "z_offset": 0.0 },
+      "material_id": "PZT-4", "poling": { "direction": "-z" } },
+    { "id": "upper", "shape": "disc", "params": { "radius": 0.0105, "thickness": 0.00075, "z_offset": 0.00075 },
+      "material_id": "PZT-4", "poling": { "direction": "+z" } }
+  ],
+  "electrodes": [
+    { "id": "bottom", "body_id": "lower", "surface": "bottom",
+      "extent": { "kind": "annulus", "r_min": 0.0, "r_max": 0.0105 }, "terminal_id": "gnd" },
+    { "id": "centre", "body_id": "lower", "surface": "top",
+      "extent": { "kind": "annulus", "r_min": 0.0, "r_max": 0.0105 }, "terminal_id": "hot" },
+    { "id": "top", "body_id": "upper", "surface": "top",
+      "extent": { "kind": "annulus", "r_min": 0.0, "r_max": 0.0105 }, "terminal_id": "gnd" }
+  ],
+  "terminals": [
+    { "id": "hot", "name": "Centre", "role": "port" },
+    { "id": "gnd", "name": "Outer faces", "role": "ground" }
+  ],
+  "study": {
+    "eigen": { "num_modes": 20, "freq_shift": 1000.0, "port_condition": "short" },
+    "harmonic": { "f_start": 20000.0, "f_stop": 200000.0, "n_points": 181, "spacing": "lin" },
+    "ports": [],
+    "mesh": { "max_element_size": 0.00025, "elements_per_wavelength_at_f_max": 10, "order": 2 }
+  }
+}

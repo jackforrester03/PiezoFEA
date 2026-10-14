@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: ./backend
+    platform: linux/amd64
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/tests:/app/tests
+      - ./backend/pyproject.toml:/app/pyproject.toml
+      - ./data:/data
+      - ./validation:/validation
+    environment:
+      - PIEZOFEA_RUNS_DIR=/data/runs
+      - PIEZOFEA_VALIDATION_DIR=/validation
