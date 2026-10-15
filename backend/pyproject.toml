@@ -22,3 +22,5 @@ dev = ["pytest", "httpx"]
 testpaths = ["tests"]
 pythonpath = ["."]
 markers = ["slow: runs openCFS end to end"]
+# /app is not writable when the container runs as the host user.
+cache_dir = "/tmp/.pytest_cache"

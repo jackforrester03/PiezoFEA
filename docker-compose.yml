@@ -1,9 +1,16 @@
+# Mac / local development: `docker compose up -d` starts the backend, and the frontend runs with
+# `npm run dev` in ./frontend (http://localhost:5173).
+# Server: put COMPOSE_PROFILES=web (and PIEZOFEA_UID/GID) in .env, see README.md; `docker compose
+# up -d --build` then also serves the built frontend on http://localhost:8080.
+# Ports are bound to 127.0.0.1 only: reach them from another machine through an SSH tunnel.
 services:
   backend:
     build: ./backend
     platform: linux/amd64
+    # Run as the host user so run folders in ./data are not owned by root.
+    user: "${PIEZOFEA_UID:-1000}:${PIEZOFEA_GID:-1000}"
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - ./backend/app:/app/app
       - ./backend/tests:/app/tests
@@ -13,3 +20,11 @@ services:
     environment:
       - PIEZOFEA_RUNS_DIR=/data/runs
       - PIEZOFEA_VALIDATION_DIR=/validation
+      - HOME=/tmp
+
+  frontend:
+    build: ./frontend
+    profiles: [web]
+    depends_on: [backend]
+    ports:
+      - "127.0.0.1:8080:80"
